@@ -19,3 +19,6 @@ ingress:
     - host:
       paths:
         - /kubernetescicddemo
+        
+serviceAccount:
+  create: false
