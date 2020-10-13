@@ -37,11 +37,14 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
+				echo 'skip Docker Publish'
+				/*
                 container('docker') {
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
                 }
+				*/
             }
         }
         stage('Kubernetes Deploy') {
