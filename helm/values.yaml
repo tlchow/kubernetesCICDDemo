@@ -1,0 +1,21 @@
+image:
+  repository: tlchow/k8s-jenkins-example
+  tag: latest
+  pullPolicy: Always
+
+name: "k8s-jenkins-example"
+domain: "home"
+
+replicaCount: 1
+
+service:
+  port: 8090
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host:
+      paths:
+        - /k8s-jenkins-example
