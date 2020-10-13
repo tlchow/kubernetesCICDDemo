@@ -33,7 +33,9 @@ pipeline {
             }
         }
         stage('Docker Publish') {
-			echo 'Docker Publish Skip'
+            steps {
+				echo 'Docker Publish Skip'
+			}
 			/*
             when {
                 environment name: 'DEPLOY', value: 'true'
