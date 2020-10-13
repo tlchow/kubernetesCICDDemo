@@ -1,9 +1,9 @@
 image:
-  repository: tlchow/k8s-jenkins-example
+  repository: tlchow/kubernetesCICDDemo
   tag: latest
   pullPolicy: Always
 
-name: "k8s-jenkins-example"
+name: "kubernetesCICDDemo"
 domain: "home"
 
 replicaCount: 1
@@ -18,4 +18,4 @@ ingress:
   hosts:
     - host:
       paths:
-        - /k8s-jenkins-example
+        - /kubernetesCICDDemo
