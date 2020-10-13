@@ -17,12 +17,21 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+				echo 'Build skip'
+			}
+			/*
+            steps {
                 container('maven') {
                     sh 'mvn package'
                 }
             }
+			*/
         }
         stage('Docker Build') {
+            steps {
+				echo 'Docker Build skip'
+			}
+			/*
             when {
                 environment name: 'DEPLOY', value: 'true'
             }
@@ -31,6 +40,7 @@ pipeline {
                     sh "docker build -t ${REGISTRY}:${VERSION} ."
                 }
             }
+			*/
         }
         stage('Docker Publish') {
             steps {

@@ -22,3 +22,6 @@ ingress:
         
 serviceAccount:
   create: false
+  
+autoscaling:
+  enabled: false
