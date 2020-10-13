@@ -17,12 +17,21 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+				echo 'Build skip'
+			}
+			/*
+            steps {
                 container('maven') {
                     sh 'mvn package'
                 }
             }
+			*/
         }
         stage('Docker Build') {
+            steps {
+				echo 'Docker Build skip'
+			}
+			/*
             when {
                 environment name: 'DEPLOY', value: 'true'
             }
@@ -31,21 +40,24 @@ pipeline {
                     sh "docker build -t ${REGISTRY}:${VERSION} ."
                 }
             }
+			*/
         }
         stage('Docker Publish') {
+            steps {
+				echo 'Docker Publish Skip'
+			}
+			/*
             when {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				echo 'skip Docker Publish'
-				/*
                 container('docker') {
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
                 }
-				*/
             }
+			*/
         }
         stage('Kubernetes Deploy') {
             when {
@@ -53,7 +65,7 @@ pipeline {
             }
             steps {
                 container('helm') {
-                    sh "helm upgrade --install --force --set controller.service.omitClusterIP=true --set defaultBackend.service.omitClusterIP=true --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
+                    sh "helm upgrade --install --force --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm"
                 }
             }
         }
