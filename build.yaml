@@ -27,7 +27,7 @@ spec:
       command:
         - cat
       tty: true
-  serviceAccountName: triller
+  serviceAccountName: tiller
   volumes:
     - name: dockersock
       hostPath:
