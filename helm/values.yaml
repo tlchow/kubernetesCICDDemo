@@ -1,9 +1,9 @@
 image:
-  repository: tlchow/kubernetesCICDDemo
+  repository: tlchow/kubernetescicddemo
   tag: latest
   pullPolicy: Always
 
-name: "kubernetesCICDDemo"
+name: "kubernetescicddemo"
 domain: "home"
 
 replicaCount: 1
@@ -18,4 +18,4 @@ ingress:
   hosts:
     - host:
       paths:
-        - /kubernetesCICDDemo
+        - /kubernetescicddemo
