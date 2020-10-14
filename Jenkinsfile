@@ -17,9 +17,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+				echo 'skip Build'
+				/*
                 container('maven') {
                     sh 'mvn package'
                 }
+				*/
             }
         }
         stage('Docker Build') {
@@ -27,9 +30,12 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
+				echo 'skip Docker Build'
+				/*
                 container('docker') {
                     sh "docker build -t ${REGISTRY}:${VERSION} ."
                 }
+				*/
             }
         }
         stage('Docker Publish') {
@@ -53,7 +59,8 @@ pipeline {
             }
             steps {
                 container('helm') {
-                    sh "helm upgrade --install --force --set controller.service.omitClusterIP=true --set defaultBackend.service.omitClusterIP=true --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
+                    sh "helm uninstall ${NAME} ./helm "
+                    sh "helm upgrade --install --force --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
                 }
             }
         }
