@@ -11,7 +11,6 @@ pipeline {
         kubernetes {
             defaultContainer 'jnlp'
             yamlFile 'build.yaml'
-			idleMinutes 60
         }
     }
     stages {
