@@ -59,7 +59,7 @@ pipeline {
             }
             steps {
                 container('helm') {
-                    sh "helm uninstall ${NAME} ./helm "
+                    sh "helm uninstall ${NAME} "
                     sh "helm upgrade --install --force --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
                 }
             }
