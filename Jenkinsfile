@@ -44,9 +44,14 @@ pipeline {
             steps {
 				/*
 				echo 'skip Docker Publish'
-				*/
                 container('docker') {
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: "https://docker-registry.default.svc.cluster.local:5000"]) {
+                        sh "docker push ${REGISTRY}:${VERSION}"
+                    }
+                }
+				*/
+                container('docker') {
+                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
                 }
