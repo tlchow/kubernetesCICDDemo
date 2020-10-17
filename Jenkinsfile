@@ -4,7 +4,7 @@ pipeline {
         NAME = "${env.BRANCH_NAME == "master" ? "example" : "example-staging"}"
         VERSION = readMavenPom().getVersion()
         DOMAIN = 'localhost'
-        REGISTRY = 'tlchow/kubernetescicddemo'
+        REGISTRY = 'tlchow/k8sdemo'
         REGISTRY_CREDENTIAL = 'dockerHub'
     }
     agent {
@@ -45,7 +45,7 @@ pipeline {
 				echo 'skip Docker Publish'
 				/*
                 container('docker') {
-                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
+                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: "https://svc.cluster.local:5000"]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
                 }
@@ -58,7 +58,7 @@ pipeline {
             }
             steps {
                 container('helm') {
-                    sh "helm upgrade --install --force --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
+                    sh "helm upgrade --install --namespace default --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
                 }
             }
         }
