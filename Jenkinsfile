@@ -16,12 +16,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+			/*
 				echo 'skip Build'
-				/*
+			*/
                 container('maven') {
                     sh 'mvn package'
                 }
-				*/
             }
         }
         stage('Docker Build') {
@@ -29,12 +29,12 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				echo 'skip Docker Build'
 				/*
+				echo 'skip Docker Build'
+				*/
                 container('docker') {
                     sh "docker build -t ${REGISTRY}:${VERSION} ."
                 }
-				*/
             }
         }
         stage('Docker Publish') {
@@ -42,14 +42,14 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				echo 'skip Docker Publish'
 				/*
+				echo 'skip Docker Publish'
+				*/
                 container('docker') {
-                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: "https://svc.cluster.local:5000"]) {
+                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: "https://docker-registry.default.svc.cluster.local:5000"]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
                 }
-				*/
             }
         }
         stage('Kubernetes Deploy') {
