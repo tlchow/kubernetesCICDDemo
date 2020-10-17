@@ -21,8 +21,7 @@ spec:
       tty: true
       privileged: true
       volumeMounts:
-        - name: opspvc
-          subPath: docker
+        - name: dockersock      
           mountPath: /var/run/docker.sock
     - name: helm
       image: lachlanevenson/k8s-helm:v3.3.4
@@ -31,6 +30,9 @@ spec:
       tty: true
   serviceAccountName: tiller
   volumes:
+    - name: dockersock
+      hostPath:
+        path: /var/run/docker.sock
     - name: opspvc
       persistentVolumeClaim:
         claimName: opspvc        
