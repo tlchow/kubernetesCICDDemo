@@ -32,9 +32,8 @@ spec:
   serviceAccountName: tiller
   volumes:
     - name: dockersock
-      hostPath:
-        persistentVolumeClaim:
-          claimName: opspvc        
+      persistentVolumeClaim:
+        claimName: opspvc        
     - name: m2
-        persistentVolumeClaim:
-          claimName: opspvc        
+      persistentVolumeClaim:
+        claimName: opspvc        
