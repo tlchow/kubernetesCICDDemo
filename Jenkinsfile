@@ -33,7 +33,7 @@ pipeline {
 				echo 'skip Docker Build'
 				*/
                 container('docker') {
-                    sh "docker build -t ${REGISTRY}:${VERSION} ."
+					def customImage = docker.build(" ${REGISTRY}:${VERSION}")				
                 }
             }
         }
@@ -51,10 +51,9 @@ pipeline {
                 }
 				*/
                 container('docker') {
-                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
-                        sh "docker push ${REGISTRY}:${VERSION}"
-                    }
-                }
+					docker.withRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
+                    customImage.push()
+                }				
             }
         }
         stage('Kubernetes Deploy') {
