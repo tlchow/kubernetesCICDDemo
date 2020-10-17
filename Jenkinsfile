@@ -52,8 +52,9 @@ pipeline {
 				*/
                 container('docker') {
 					docker.withRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
-                    customImage.push()
-                }				
+						customImage.push()
+					}
+				}
             }
         }
         stage('Kubernetes Deploy') {
