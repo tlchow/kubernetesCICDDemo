@@ -7,6 +7,7 @@ pipeline {
         REGISTRY = 'tlchow/k8sdemo'
         REGISTRY_CREDENTIAL = 'dockerHub'
     }
+	agent none
 	/*
     agent {
         kubernetes {
