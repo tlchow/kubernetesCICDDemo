@@ -4,21 +4,22 @@ pipeline {
         NAME = "${env.BRANCH_NAME == "master" ? "example" : "example-staging"}"
         VERSION = readMavenPom().getVersion()
         DOMAIN = 'localhost'
-        REGISTRY = 'tlchow/k8sdemo'
+        REGISTRY = 'tlchow/kubernetescicddemo'
         REGISTRY_CREDENTIAL = 'dockerHub'
     }
+	/*
     agent {
         kubernetes {
             defaultContainer 'jnlp'
             yamlFile 'build.yaml'
+			idleMinutes 60
         }
     }
+	*/
     stages {
         stage('Build') {
             steps {
-			/*
-				echo 'skip Build'
-			*/
+				echo 'Build skip'
                 container('maven') {
                     sh 'mvn package'
                 }
@@ -29,11 +30,9 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				/*
-				echo 'skip Docker Build'
-				*/
+				echo 'Docker Build skip'
                 container('docker') {
-					def customImage = docker.build(" ${REGISTRY}:${VERSION}")				
+                    sh "docker build -t ${REGISTRY}:${VERSION} ."
                 }
             }
         }
@@ -42,19 +41,12 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				/*
-				echo 'skip Docker Publish'
+				echo 'Docker Publish Skip'
                 container('docker') {
-                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: "https://docker-registry.default.svc.cluster.local:5000"]) {
+                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
                 }
-				*/
-                container('docker') {
-					docker.withRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
-						customImage.push()
-					}
-				}
             }
         }
         stage('Kubernetes Deploy') {
@@ -63,7 +55,7 @@ pipeline {
             }
             steps {
                 container('helm') {
-                    sh "helm upgrade --install --namespace default --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm "
+                    sh "helm upgrade --install --force --set name=${NAME} --set image.tag=${VERSION} --set domain=${DOMAIN} ${NAME} ./helm"
                 }
             }
         }
