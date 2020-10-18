@@ -20,7 +20,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-				echo 'Build skip'
                 container('maven') {
                     sh 'mvn package'
                 }
@@ -31,7 +30,6 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				echo 'Docker Build skip'
                 container('docker') {
                     sh "docker build -t ${REGISTRY}:${VERSION} ."
                 }
@@ -42,7 +40,6 @@ pipeline {
                 environment name: 'DEPLOY', value: 'true'
             }
             steps {
-				echo 'Docker Publish Skip'
                 container('docker') {
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
                         sh "docker push ${REGISTRY}:${VERSION}"
