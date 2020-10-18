@@ -8,15 +8,6 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerHub'
     }
 	agent none
-	/*
-    agent {
-        kubernetes {
-            defaultContainer 'jnlp'
-            yamlFile 'build.yaml'
-			idleMinutes 60
-        }
-    }
-	*/
     stages {
         stage('Build') {
             steps {
