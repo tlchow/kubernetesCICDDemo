@@ -29,6 +29,7 @@ pipeline {
             steps {
                 withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
                    sh "docker push ${REGISTRY}:${VERSION}"
+				}
             }
         }
         stage('Kubernetes Deploy') {
